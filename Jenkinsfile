@@ -1,7 +1,7 @@
 pipeline {
 	agent any
   stages {
-    stage('Log Jenkins Maven Docker Git and Java version info') {
+    stage('Log Jenkins Maven Docker Git and Java version info.') {
       steps {
         echo 'mvn -version'
         echo 'java -version'
