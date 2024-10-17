@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define the Slack channel (optional if default channel is set in Jenkins)
+        SLACK_CHANNEL = '#all-slack'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Running build step...'
+                    // Simulate a successful build by running an echo command
+                    sh 'echo "Build step successful"'
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Running test step...'
+                    // Simulate successful test execution
+                    sh 'echo "Test step successful"'
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                script {
+                    echo 'Running deploy step...'
+                    // Simulate successful deploy step
+                    sh 'echo "Deploy step successful"'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            // Notify Slack on successful pipeline completion
+            slackSend(
+                channel: SLACK_CHANNEL, 
+                color: 'good', 
+                message: "Pipeline succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
+            )
+        }
+    }
+}
