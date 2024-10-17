@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    environment {
+        // Add your Slack channel here (optional if you configured a default channel in Jenkins)
+        SLACK_CHANNEL = '#all-slack'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Running build step...'
+                    // Simulate success by doing a simple echo
+                    sh 'echo "Build successful"'
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Running test step...'
+                    // Simulate a test failure by raising an error
+                    error("Simulated test failure")  // This line will intentionally cause the pipeline to fail
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            // Notify Slack on successful build
+            slackSend(
+                channel: SLACK_CHANNEL, 
+                color: 'good', 
+                message: "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
+            )
+        }
+        
+        failure {
+            // Notify Slack on failed build
+            slackSend(
+                channel: SLACK_CHANNEL, 
+                color: 'danger', 
+                message: "Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
+            )
+        }
+
+        always {
+            // Notify Slack that the build process has finished (optional)
+            slackSend(
+                channel: SLACK_CHANNEL, 
+                color: '#439FE0', 
+                message: "Build finished: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
+            )
+        }
+    }
+}
