@@ -38,14 +38,6 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            // Notify Slack on successful pipeline completion
-            slackSend(
-                channel: SLACK_CHANNEL, 
-                color: 'good', 
-                message: "Pipeline succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
-            )
-        }
+    
     }
 }
