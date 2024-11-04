@@ -38,15 +38,7 @@ pipeline {
             )
         }
         
-        failure {
-            // Notify Slack on failed build
-            slackSend(
-                channel: SLACK_CHANNEL, 
-                color: 'danger', 
-                message: "Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCheck details: ${env.BUILD_URL}"
-            )
-        }
-
+       
         always {
             // Notify Slack that the build process has finished (optional)
             slackSend(
